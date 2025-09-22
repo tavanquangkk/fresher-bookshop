@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import styles from "./styles/Counter.module.css";
+import "./assets/styles/app.css";
 
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import LoginPage from "./pages/login";
 import Contact from "./pages/contact/contact";
 import Header from "./components/header/header";
 import Footer from "./components/footer/footer";
 import BookPage from "./pages/book/book";
 import Home from "./components/home/home";
+import RegisterPage from "./pages/register/register";
+import LoginPage from "./pages/login/login";
 
 const Layout = () => {
     return (
@@ -41,6 +42,10 @@ export default function App() {
         {
             path: "/login",
             element: <LoginPage />,
+        },
+        {
+            path: "/register",
+            element: <RegisterPage />,
         },
     ]);
     return (
