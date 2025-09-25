@@ -18,4 +18,8 @@ const loginAPI = async (username, password) => {
     return res;
 };
 
-export { registerAPI, loginAPI };
+const fetchAccount = async () => {
+    return await axios.get("/api/v1/auth/account");
+};
+
+export { registerAPI, loginAPI, fetchAccount };

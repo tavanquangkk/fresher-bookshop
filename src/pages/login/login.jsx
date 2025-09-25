@@ -1,19 +1,27 @@
 import { Button, Col, Form, Input, message, Row } from "antd";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { loginAPI } from "../../services/auth-api";
+import { useDispatch } from "react-redux";
+import { doLoginAction } from "../../redux/account/accountSlice";
 
 const LoginPage = () => {
     const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(false);
+    const dispath = useDispatch();
+    const navigate = useNavigate();
     const onFinish = async (value) => {
         setIsLoading(true);
         const { email, password } = value;
         const res = await loginAPI(email, password);
         console.log(">>>Check res of value", res?.data);
-        if (res.data) {
+        if (res?.data) {
+            console.log(">>>Check res of value", res.data.access_token);
+            localStorage.setItem("access_token", res.data.access_token);
             message.success("ログインしました");
             form.resetFields();
+            dispath(doLoginAction(res.data.user));
+            navigate("/");
         } else {
             message.error("エラー発生しました。内容ご確認の上、再度お試しください");
         }
