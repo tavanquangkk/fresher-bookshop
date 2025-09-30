@@ -18,7 +18,7 @@ export const accountSlice = createSlice({
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
         doLoginAction: (state, action) => {
-            (state.isAuthenticated = true), (state.user = action.payload.user);
+            (state.isAuthenticated = true), (state.user = action.payload);
         },
         doGetAccountAcction: (state, action) => {
             (state.isAuthenticated = true), (state.user = action.payload.user);

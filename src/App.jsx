@@ -16,40 +16,14 @@ import Loading from "./components/loading/loading";
 import NotFound from "./components/notfound/NotFound";
 import AdminPage from "./pages/admin/admin";
 import ProtectedRoute from "./components/protected-route/ProtectedRoute";
-
-const Layout = () => {
-    return (
-        <div className="layout-app">
-            <Header />
-            <Outlet />
-            <Footer />
-        </div>
-    );
-};
-
-const LayoutAdmin = () => {
-    const isAdminRoute = window.location.pathname.startsWith("/admin");
-    const user = useSelector((state) => state.account.user);
-    const userRole = user.role;
-    return (
-        <div className="layout-admin-app">
-            {isAdminRoute && userRole === "ADMIN" && <Header />}
-
-            <Outlet />
-            {isAdminRoute && userRole === "ADMIN" && <Footer />}
-        </div>
-    );
-};
+import AdminLayout from "./components/layout/AdminLayout";
+import UserLayout from "./components/layout/UserLayout";
 
 export default function App() {
     const dispath = useDispatch();
     const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
     const getAccount = async () => {
-        if (
-            window.location.pathname === "/login" ||
-            window.location.pathname === "/register" ||
-            window.location.pathname === "/"
-        ) {
+        if (window.location.pathname === "/login" || window.location.pathname === "/register") {
             return;
         }
         const res = await fetchAccount();
@@ -65,7 +39,7 @@ export default function App() {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <Layout />,
+            element: <UserLayout />,
             errorElement: <NotFound />,
             children: [
                 { index: true, element: <Home /> },
@@ -81,7 +55,7 @@ export default function App() {
         },
         {
             path: "/admin",
-            element: <LayoutAdmin />,
+            element: <AdminLayout />,
             errorElement: <NotFound />,
             children: [
                 {

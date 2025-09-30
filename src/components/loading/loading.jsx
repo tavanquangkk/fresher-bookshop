@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { HashLoader } from "react-spinners";
 
 const Loading = () => {
