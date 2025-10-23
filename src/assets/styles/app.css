@@ -1,0 +1,20 @@
+.user-layout-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.user-layout-header input {
+    width: 60%;
+}
+.user-layout-header .cart-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
