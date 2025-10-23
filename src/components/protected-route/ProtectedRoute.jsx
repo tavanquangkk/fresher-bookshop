@@ -1,14 +1,22 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
 import NotPermitted from "./NotPermitted";
+import { useLocation } from "react-router-dom";
 
 const RoleBaseRoute = (props) => {
-    const isAdminRoute = window.location.pathname.startsWith("/admin");
+    const location = useLocation();
+    const isAdminRoute = location.pathname.startsWith("/admin");
+
     const user = useSelector((state) => state.account.user);
-    const userRole = user.role;
+    console.log(">>>CHECK user", user.user);
+    const userRole = user?.user.role;
+    if (!user) {
+        return null;
+    }
     if (isAdminRoute && userRole === "ADMIN") {
         return <>{props.children}</>;
     } else {
+        console.log(">>>CHECK ROLE", userRole);
         return <NotPermitted />;
     }
 };

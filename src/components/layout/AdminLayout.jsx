@@ -1,16 +1,21 @@
 import {
+    DesktopOutlined,
+    FileOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
+    PieChartOutlined,
+    TeamOutlined,
     UploadOutlined,
     UserOutlined,
     VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { useState } from "react";
 import Header from "../header/header";
 import { Content } from "antd/es/layout/layout";
 import { Outlet } from "react-router";
+import { useSelector } from "react-redux";
 
 const AdminLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -21,35 +26,37 @@ const AdminLayout = () => {
     const isAdminRoute = window.location.pathname.startsWith("/admin");
     const user = useSelector((state) => state.account.user);
     const userRole = user.role;
+
+    const { Header, Content, Footer, Sider } = Layout;
+    function getItem(label, key, icon, children) {
+        return {
+            key,
+            icon,
+            children,
+            label,
+        };
+    }
+    const items = [
+        getItem("ADMIN", "1", <PieChartOutlined />),
+        getItem("Dashboard", "2", <DesktopOutlined />),
+        getItem("Manage Users", "sub1", <UserOutlined />, [
+            getItem("CRUD", "3"),
+            getItem("File1", "4"),
+        ]),
+        getItem("Manage Books", "sub2", <TeamOutlined />),
+        getItem("Manage Orders", "9", <FileOutlined />),
+    ];
     return (
         <div className="layout-admin-app">
             {isAdminRoute && userRole === "ADMIN" && <Header />}
 
-            <Layout style={{ height: "100vh" }}>
-                <Sider trigger={null} collapsible collapsed={collapsed}>
+            <Layout style={{ minHeight: "100vh" }}>
+                <Sider
+                    collapsible
+                    collapsed={collapsed}
+                    onCollapse={(value) => setCollapsed(value)}>
                     <div className="demo-logo-vertical" />
-                    <Menu
-                        theme="dark"
-                        mode="inline"
-                        defaultSelectedKeys={["1"]}
-                        items={[
-                            {
-                                key: "1",
-                                icon: <UserOutlined />,
-                                label: "nav 1",
-                            },
-                            {
-                                key: "2",
-                                icon: <VideoCameraOutlined />,
-                                label: "nav 2",
-                            },
-                            {
-                                key: "3",
-                                icon: <UploadOutlined />,
-                                label: "nav 3",
-                            },
-                        ]}
-                    />
+                    <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline" items={items} />
                 </Sider>
                 <Layout>
                     <Header style={{ padding: 0, background: colorBgContainer }}>
@@ -64,15 +71,24 @@ const AdminLayout = () => {
                             }}
                         />
                     </Header>
-                    <Outlet
-                    // style={{
-                    //     margin: "24px 16px",
-                    //     padding: 24,
-                    //     minHeight: 280,
-                    //     background: colorBgContainer,
-                    //     borderRadius: borderRadiusLG,
-                    // }}
-                    />
+                    <Content style={{ margin: "0 16px" }}>
+                        <Breadcrumb
+                            style={{ margin: "16px 0" }}
+                            items={[{ title: "User" }, { title: "Bill" }]}
+                        />
+                        <div
+                            style={{
+                                padding: 24,
+                                minHeight: 360,
+                                background: colorBgContainer,
+                                borderRadius: borderRadiusLG,
+                            }}>
+                            Bill is a cat.
+                        </div>
+                    </Content>
+                    <Footer style={{ textAlign: "center" }}>
+                        Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                    </Footer>
                 </Layout>
             </Layout>
             {isAdminRoute && userRole === "ADMIN" && <Footer />}
